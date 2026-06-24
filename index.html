@@ -1,0 +1,2635 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>FACE A — Angelo Studio</title>
+  <link rel="icon" type="image/png" href="asset/FACE RECORD.png">
+  <link rel="apple-touch-icon" href="asset/FACE RECORD.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.typekit.net/fqc0vdd.css">
+
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #151213;
+      --accent:    #ECB8A6;
+      --accent-dim: rgba(236,184,166,0.15);
+      --accent-mid: rgba(236,184,166,0.4);
+      --white:     #F5F0EC;
+      --white-dim: rgba(245,240,236,0.45);
+      --white-faint: rgba(245,240,236,0.1);
+      --dark:      #1C181A;
+      --mid:       #252022;
+
+      --spin-play:  3.6s;
+      --spin-fast:  3.6s;
+      --spin-slow:  5s;
+
+      --font-display: 'megascope-variable', 'Cormorant Garamond', Georgia, serif;
+      --font-serif:   'Cormorant Garamond', Georgia, serif;
+      --font-sans:    'spalla', system-ui, sans-serif;
+      --font-body:    'Space Grotesk', system-ui, sans-serif;
+
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: var(--font-sans);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    /* ─── CUSTOM CURSOR ────────────────────────────────────────────── */
+    #cursor {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      pointer-events: none;
+      z-index: 999999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s linear, width 0.25s var(--ease-out-expo), height 0.25s var(--ease-out-expo), opacity 0.2s;
+      mix-blend-mode: difference;
+    }
+
+    #cursor-ring {
+      position: fixed;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(236,184,166,0.5);
+      pointer-events: none;
+      z-index: 999998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s var(--ease-out-expo), width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), border-color 0.2s;
+    }
+
+    body:hover #cursor { opacity: 1; }
+
+    /* ─── TYPOGRAPHY ───────────────────────────────────────────────── */
+    .t-hero {
+      font-family: var(--font-display);
+      font-size: clamp(5rem, 18vw, 16rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 0.88;
+      color: var(--white);
+      text-transform: uppercase;
+    }
+
+    .t-section-title {
+      font-family: var(--font-sans);
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    .t-label {
+      font-family: var(--font-sans);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .t-body {
+      font-family: var(--font-body);
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--white-dim);
+    }
+
+    /* ─── VINYL KEYFRAMES ──────────────────────────────────────────── */
+    @keyframes vinyl-spin {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes vinyl-wobble {
+      0%   { transform: rotate(0deg) scaleX(1); }
+      12%  { transform: rotate(43deg) scaleX(0.9985); }
+      25%  { transform: rotate(90deg) scaleX(1); }
+      37%  { transform: rotate(133deg) scaleX(1.0015); }
+      50%  { transform: rotate(180deg) scaleX(1); }
+      62%  { transform: rotate(223deg) scaleX(0.9985); }
+      75%  { transform: rotate(270deg) scaleX(1); }
+      87%  { transform: rotate(313deg) scaleX(1.0015); }
+      100% { transform: rotate(360deg) scaleX(1); }
+    }
+
+    @keyframes float-drift {
+      0%, 100% { transform: translateY(0px) rotate(var(--float-rot, -12deg)); }
+      50%       { transform: translateY(-18px) rotate(var(--float-rot, -12deg)); }
+    }
+
+    @keyframes reveal-up {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes scroll-arrow {
+      0%, 100% { opacity: 0.3; transform: translateY(0); }
+      50%       { opacity: 1; transform: translateY(8px); }
+    }
+
+    @keyframes grain {
+      0%, 100% { transform: translate(0, 0); }
+      10% { transform: translate(-2%, -3%); }
+      20% { transform: translate(1%, 2%); }
+      30% { transform: translate(-1%, 1%); }
+      40% { transform: translate(2%, -2%); }
+      50% { transform: translate(-2%, 1%); }
+      60% { transform: translate(1%, -1%); }
+      70% { transform: translate(-1%, 3%); }
+      80% { transform: translate(2%, 1%); }
+      90% { transform: translate(-2%, -1%); }
+    }
+
+    /* ─── CSS VINYL RECORD COMPONENT ──────────────────────────────── */
+    /*
+      ASSET DROP-IN GUIDE:
+      Replace .vinyl-record background with an <img> tag pointing to your vinyl PNG.
+      The .vinyl-wrap handles spin animation and hover. The .vinyl-label inner element
+      renders the center label text.
+
+      Example swap:
+        <div class="vinyl-wrap ...">
+          <img src="assets/vinyl-face-a.png" class="vinyl-img" alt="FACE A vinyl">
+        </div>
+      Then add .vinyl-img { width:100%; height:100%; border-radius:50%; }
+    */
+
+    .vinyl-wrap {
+      position: relative;
+      border-radius: 50%;
+      flex-shrink: 0;
+      will-change: transform;
+      filter: drop-shadow(0 20px 60px rgba(0,0,0,0.7));
+      transition: filter 0.4s ease;
+    }
+
+    .vinyl-wrap:hover {
+      filter: drop-shadow(0 30px 80px rgba(236,184,166,0.25)) drop-shadow(0 20px 60px rgba(0,0,0,0.8));
+    }
+
+    /* Angelo Studio steel-blue glow — hero vinyl */
+    .hero-bg-vinyl {
+      filter: drop-shadow(0 20px 60px rgba(0,0,0,0.7)) drop-shadow(0 0 50px rgba(98, 142, 165, 0.28));
+    }
+    #hero:hover .hero-bg-vinyl,
+    .hero-bg-vinyl:hover {
+      filter: drop-shadow(0 30px 80px rgba(0,0,0,0.8)) drop-shadow(0 0 80px rgba(98, 142, 165, 0.6));
+    }
+
+    /* Angelo Studio steel-blue glow — late-pass vinyl */
+    .late-pass-vinyl-main {
+      filter: drop-shadow(0 20px 60px rgba(0,0,0,0.7)) drop-shadow(0 0 50px rgba(98, 142, 165, 0.3));
+    }
+    .late-pass-vinyl-main:hover {
+      filter: drop-shadow(0 30px 80px rgba(0,0,0,0.8)) drop-shadow(0 0 70px rgba(98, 142, 165, 0.55));
+    }
+
+    .vinyl-disc {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      /* animation driven by JS — CSS animation is fallback only */
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Rose gold / copper vinyl (FACE A) */
+    .vinyl-disc.copper {
+      background:
+        radial-gradient(circle at 50% 50%, #e8e8e8 0%, #e8e8e8 1.4%, transparent 1.4%),
+        radial-gradient(circle at 50% 50%, #111 0%, #111 22%, transparent 22%),
+        repeating-radial-gradient(
+          circle at 50% 50%,
+          rgba(0,0,0,0) 0px, rgba(0,0,0,0.12) 0.4px,
+          rgba(255,255,255,0.06) 0.8px, rgba(0,0,0,0) 1.2px,
+          rgba(0,0,0,0) 3px
+        ),
+        radial-gradient(ellipse at 32% 28%, #e8c0a8 0%, #c4876a 35%, #a06248 60%, #7a4433 100%);
+    }
+
+    /* Steel blue vinyl (Angelo Studio) */
+    .vinyl-disc.steel {
+      background:
+        radial-gradient(circle at 50% 50%, #e8e8e8 0%, #e8e8e8 1.4%, transparent 1.4%),
+        radial-gradient(circle at 50% 50%, #d8dfe2 0%, #d8dfe2 22%, transparent 22%),
+        repeating-radial-gradient(
+          circle at 50% 50%,
+          rgba(0,0,0,0) 0px, rgba(0,0,0,0.1) 0.4px,
+          rgba(255,255,255,0.08) 0.8px, rgba(0,0,0,0) 1.2px,
+          rgba(0,0,0,0) 3px
+        ),
+        radial-gradient(ellipse at 35% 30%, #c8dce4 0%, #9ab8c4 35%, #6e9aaa 65%, #4a7888 100%);
+    }
+
+    /* Clear splatter vinyl */
+    .vinyl-disc.clear {
+      background:
+        radial-gradient(circle at 50% 50%, #e8e8e8 0%, #e8e8e8 1.4%, transparent 1.4%),
+        radial-gradient(circle at 50% 50%, #e8e0d8 0%, #e8e0d8 22%, transparent 22%),
+        repeating-radial-gradient(
+          circle at 50% 50%,
+          rgba(0,0,0,0) 0px, rgba(0,0,0,0.07) 0.4px,
+          rgba(255,255,255,0.12) 0.8px, rgba(0,0,0,0) 1.2px,
+          rgba(0,0,0,0) 3px
+        ),
+        radial-gradient(ellipse at 40% 35%, rgba(220,210,200,0.9) 0%, rgba(195,185,175,0.95) 100%);
+    }
+
+    /* Label text on disc */
+    .vinyl-label-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40%;
+      height: 40%;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .vinyl-label-text.dark-label {
+      background: #0e0c0d;
+    }
+
+    .vinyl-label-text.light-label {
+      background: #d8dfe2;
+    }
+
+    .vinyl-label-text span {
+      display: block;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      line-height: 1.1;
+    }
+
+    .vinyl-label-text.dark-label span { color: #F5F0EC; }
+    .vinyl-label-text.light-label span { color: #1a1618; }
+
+    /* Vinyl image (when dropping in actual PNG assets) */
+    .vinyl-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ─── NOISE GRAIN OVERLAY ──────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: -50%;
+      width: 200%;
+      height: 200%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.035;
+      pointer-events: none;
+      z-index: 10000;
+      animation: grain 0.5s steps(1) infinite;
+    }
+
+    /* ─── SECTION SHARED ───────────────────────────────────────────── */
+    section {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 6vw, 5rem);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.9s var(--ease-out-expo), transform 0.9s var(--ease-out-expo);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.35s; }
+    .reveal-delay-4 { transition-delay: 0.5s; }
+
+    /* ─── HERO ─────────────────────────────────────────────────────── */
+    #hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── Hero vinyl riser — centered, lifts slightly on hover ─── */
+    .hero-vinyl-riser {
+      position: absolute;
+      top: 50%;
+      right: clamp(0rem, 2vw, 3rem);
+      width: clamp(280px, 44vw, 620px);
+      height: clamp(280px, 44vw, 620px);
+      z-index: 1;
+      transform: translateY(-50%);
+      transition: transform 1.9s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+
+    #hero:hover .hero-vinyl-riser {
+      transform: translateY(-56%);
+      transition-duration: 1.3s;
+    }
+
+    .hero-bg-vinyl {
+      width: 100%;
+      height: 100%;
+      opacity: 0.92;
+      pointer-events: all;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: clamp(2.5rem, 7vh, 8rem) clamp(1.5rem, 6vw, 5rem);
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      animation: fade-in 1.2s var(--ease-out-expo) 0.3s both;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .hero-wordmark {
+      animation: reveal-up 1.2s var(--ease-out-expo) 0.1s both;
+      display: flex;
+      align-items: baseline;
+      gap: 0.12em;
+      flex-wrap: nowrap;
+    }
+
+    .hero-a-letter {
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      margin-top: clamp(2rem, 4vh, 3rem);
+      font-family: var(--font-sans);
+      font-style: normal;
+      font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+      font-weight: 300;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      animation: reveal-up 1.2s var(--ease-out-expo) 0.4s both;
+    }
+
+    .hero-divider {
+      width: clamp(40px, 8vw, 80px);
+      height: 1px;
+      background: linear-gradient(to right, var(--accent), transparent);
+      margin: clamp(1.5rem, 3vh, 2.5rem) 0;
+      animation: reveal-up 1.2s var(--ease-out-expo) 0.55s both;
+    }
+
+    .hero-studio {
+      font-size: 0.6rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--white-dim);
+      animation: fade-in 1.5s var(--ease-out-expo) 0.8s both;
+    }
+
+    /* ─── EVENT TICKER ────────────────────────────────────────────── */
+    .event-ticker {
+      width: 100%;
+      overflow: hidden;
+      background: var(--mid);
+      border-top: 1px solid rgba(245,240,236,0.06);
+      border-bottom: 1px solid rgba(245,240,236,0.06);
+      padding: 1rem 0;
+    }
+
+    .event-ticker-track {
+      display: flex;
+      white-space: nowrap;
+      animation: ticker-scroll 18s linear infinite;
+      will-change: transform;
+    }
+
+    .event-ticker-item {
+      font-family: var(--font-sans);
+      font-size: clamp(1.4rem, 3.5vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--white);
+      padding-right: clamp(2rem, 5vw, 4rem);
+      flex-shrink: 0;
+    }
+
+    .event-ticker-dot {
+      color: var(--accent);
+      margin: 0 0.5em;
+    }
+
+    @keyframes ticker-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .hero-cta-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      margin-top: clamp(2rem, 4vh, 3rem);
+      animation: reveal-up 1.2s var(--ease-out-expo) 0.65s both;
+    }
+
+    .btn-hero-rsvp {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.85rem 2rem;
+      border: 1px solid var(--accent-mid);
+      color: var(--white);
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.3s ease, border-color 0.3s ease;
+      cursor: none;
+    }
+
+    .btn-hero-rsvp::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      transform: translateX(-101%);
+      transition: transform 0.4s var(--ease-out-expo);
+    }
+
+    .btn-hero-rsvp:hover::before { transform: translateX(0); }
+    .btn-hero-rsvp:hover { color: var(--bg); border-color: var(--accent); }
+    .btn-hero-rsvp span { position: relative; z-index: 1; }
+
+    .btn-hero-location {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.85rem 2rem;
+      border: 1px solid rgba(245,240,236,0.15);
+      color: rgba(245,240,236,0.5);
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.3s ease, border-color 0.3s ease;
+      cursor: none;
+    }
+
+    .btn-hero-location::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(245,240,236,0.06);
+      transform: translateX(-101%);
+      transition: transform 0.4s var(--ease-out-expo);
+    }
+
+    .btn-hero-location:hover::before { transform: translateX(0); }
+    .btn-hero-location:hover { color: var(--white); border-color: rgba(245,240,236,0.35); }
+    .btn-hero-location span { position: relative; z-index: 1; }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: clamp(2rem, 5vh, 3.5rem);
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      z-index: 3;
+      animation: fade-in 2s ease 1.2s both;
+    }
+
+    .scroll-indicator span {
+      font-size: 0.55rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--white-dim);
+    }
+
+    .scroll-arrow {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scroll-arrow 2s ease-in-out infinite;
+    }
+
+    /* ─── SECTION 2: VINYL INSTRUCTIONS ───────────────────────────── */
+    #instrucciones {
+      padding: clamp(6rem, 12vh, 10rem) 0;
+      background: linear-gradient(180deg, var(--bg) 0%, var(--dark) 100%);
+    }
+
+    .instrucciones-header {
+      margin-bottom: clamp(4rem, 8vh, 7rem);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .rules-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--white-faint);
+      border: 1px solid var(--white-faint);
+    }
+
+    .rule-card {
+      background: var(--bg);
+      padding: clamp(2rem, 4vw, 3.5rem);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.4s ease;
+    }
+
+    .rule-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent-dim);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .rule-card:hover::before { opacity: 1; }
+
+    .rule-number {
+      font-family: var(--font-sans);
+      font-size: clamp(3.5rem, 7vw, 6rem);
+      font-weight: 700;
+      color: var(--accent);
+      opacity: 0.15;
+      line-height: 1;
+      margin-bottom: 1.5rem;
+      display: block;
+      transition: opacity 0.4s ease;
+    }
+
+    .rule-card:hover .rule-number { opacity: 0.3; }
+
+    .rule-title {
+      font-family: var(--font-sans);
+      font-size: clamp(1.4rem, 2.8vw, 2rem);
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+      line-height: 1.15;
+    }
+
+    .rule-desc {
+      font-family: var(--font-body);
+      font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+      color: var(--white-dim);
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    .rule-card.rule-no-entry {
+      grid-column: span 2;
+      background: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: clamp(2rem, 5vw, 4rem);
+      padding: clamp(2.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3.5rem);
+    }
+
+    .rule-card.rule-no-entry::before { display: none; }
+
+    .no-entry-vinyl {
+      flex-shrink: 0;
+      width: clamp(80px, 12vw, 140px);
+      height: clamp(80px, 12vw, 140px);
+    }
+
+    .no-entry-text .rule-title {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      color: var(--accent);
+    }
+
+    .no-entry-text .rule-desc {
+      font-size: clamp(0.9rem, 1.3vw, 1rem);
+    }
+
+    /* ─── SECTION 3: EL MOOD ────────────────────────────────────────── */
+    #mood {
+      padding: clamp(6rem, 12vh, 10rem) 0;
+      background: var(--dark);
+    }
+
+    .mood-header {
+      margin-bottom: clamp(3rem, 6vh, 5rem);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .mood-copy {
+      max-width: 420px;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      font-weight: 300;
+      color: var(--white-dim);
+      line-height: 1.55;
+    }
+
+    /* ─── MOOD DISCLAIMER ─────────────────────────────────────────── */
+    .mood-disclaimer {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.8rem;
+      padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1.5rem, 3vw, 2.5rem);
+      border: 1px solid var(--accent-mid);
+      background: rgba(236,184,166,0.05);
+      margin-bottom: clamp(3rem, 6vh, 5rem);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mood-disclaimer::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--accent);
+    }
+
+    .mood-disclaimer-icon {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 0.1em;
+    }
+
+    .mood-disclaimer strong {
+      display: block;
+      font-family: var(--font-sans);
+      font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+      line-height: 1.1;
+    }
+
+    .mood-disclaimer p {
+      font-family: var(--font-body);
+      font-size: clamp(0.88rem, 1.3vw, 1rem);
+      color: var(--white-dim);
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    /* ─── PINTEREST BOARD CARDS ────────────────────────────────────── */
+    .pinterest-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(1rem, 2vw, 1.5rem);
+      margin-bottom: clamp(3rem, 6vh, 5rem);
+    }
+
+    .pinterest-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(2rem, 4vw, 3.5rem) clamp(2rem, 4vw, 3.5rem);
+      border: 1px solid var(--white-faint);
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      min-height: clamp(200px, 28vw, 320px);
+      transition: border-color 0.5s ease;
+      cursor: none;
+    }
+
+    .pinterest-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(236,184,166,0.08) 0%, rgba(236,184,166,0.02) 100%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .pinterest-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s var(--ease-out-expo);
+    }
+
+    .pinterest-card:hover::before { opacity: 1; }
+    .pinterest-card:hover::after  { transform: scaleX(1); }
+    .pinterest-card:hover { border-color: rgba(236,184,166,0.35); }
+
+    .pinterest-card-top {
+      position: relative;
+      z-index: 1;
+    }
+
+    .pinterest-card-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+
+    .pinterest-card-title {
+      font-family: var(--font-sans);
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 0.95;
+      transition: color 0.4s ease;
+    }
+
+    .pinterest-card:hover .pinterest-card-title { color: var(--accent); }
+
+    .pinterest-card-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+      margin-top: 2rem;
+    }
+
+    .pinterest-card-cta {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white-dim);
+      transition: color 0.3s ease;
+    }
+
+    .pinterest-card:hover .pinterest-card-cta { color: var(--accent); }
+
+    .pinterest-card-arrow {
+      font-size: 1.4rem;
+      color: var(--accent);
+      transition: transform 0.4s var(--ease-out-expo);
+      display: inline-block;
+    }
+
+    .pinterest-card:hover .pinterest-card-arrow { transform: translateX(10px); }
+
+    .mood-tagline {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    .mood-tagline p {
+      font-family: var(--font-serif);
+      font-size: clamp(1.4rem, 3vw, 2.4rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--white);
+      line-height: 1.3;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .mood-tagline em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    /* ─── SECTION: EL PREMIO ──────────────────────────────────────── */
+    #premio {
+      padding: clamp(6rem, 12vh, 10rem) 0;
+      background: var(--bg);
+    }
+
+    .premio-header {
+      text-align: center;
+      margin-bottom: clamp(3rem, 6vh, 4.5rem);
+    }
+
+    .premio-header .t-section-title {
+      margin-top: 0.8rem;
+    }
+
+    .premio-lead {
+      max-width: 560px;
+      margin: 1.5rem auto 0;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      font-weight: 300;
+      color: var(--white-dim);
+      line-height: 1.6;
+    }
+
+    .premio-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: clamp(2rem, 5vh, 4rem) 0;
+    }
+
+    .premio-vinyl {
+      width: clamp(220px, 32vw, 380px);
+      height: clamp(220px, 32vw, 380px);
+      filter: drop-shadow(0 0 70px rgba(236,184,166,0.32)) drop-shadow(0 20px 60px rgba(0,0,0,0.8));
+      transition: filter 0.5s ease;
+    }
+
+    .premio-vinyl:hover {
+      filter: drop-shadow(0 0 110px rgba(236,184,166,0.55)) drop-shadow(0 30px 80px rgba(0,0,0,0.9));
+    }
+
+    .premio-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(1rem, 2vw, 1.5rem);
+      margin-bottom: clamp(2rem, 4vh, 2.5rem);
+    }
+
+    .premio-card {
+      padding: clamp(1.8rem, 3.5vw, 2.8rem);
+      border: 1px solid var(--white-faint);
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.4s ease;
+    }
+
+    .premio-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent-dim);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .premio-card:hover { border-color: rgba(236,184,166,0.25); }
+    .premio-card:hover::before { opacity: 1; }
+
+    .premio-card-icon {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 3.5vw, 2.6rem);
+      color: var(--accent);
+      opacity: 0.6;
+      line-height: 1;
+      margin-bottom: 1.2rem;
+      display: block;
+      position: relative;
+    }
+
+    .premio-card-title {
+      font-family: var(--font-sans);
+      font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+      line-height: 1.15;
+      position: relative;
+    }
+
+    .premio-card-desc {
+      font-family: var(--font-body);
+      font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+      color: var(--white-dim);
+      line-height: 1.65;
+      font-weight: 300;
+      position: relative;
+    }
+
+    .premio-disclaimer {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
+      padding: clamp(1.5rem, 3vw, 2.2rem);
+      border: 1px solid var(--white-faint);
+      background: rgba(245,240,236,0.025);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .premio-disclaimer::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: rgba(245,240,236,0.15);
+    }
+
+    .premio-disclaimer-icon {
+      font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+      color: var(--white-dim);
+      opacity: 0.4;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 0.15em;
+    }
+
+    .premio-disclaimer strong {
+      display: block;
+      font-family: var(--font-sans);
+      font-size: clamp(0.78rem, 1.1vw, 0.88rem);
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(245,240,236,0.4);
+      margin-bottom: 0.5rem;
+    }
+
+    .premio-disclaimer p {
+      font-family: var(--font-body);
+      font-size: clamp(0.78rem, 1.1vw, 0.88rem);
+      color: rgba(245,240,236,0.28);
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    @media (max-width: 900px) {
+      .premio-cards { grid-template-columns: 1fr; }
+    }
+
+    /* ─── SECTION 4: TRAES A ALGUIEN ──────────────────────────────── */
+    #late-pass {
+      padding: clamp(6rem, 12vh, 10rem) 0;
+      background: var(--bg);
+      position: relative;
+    }
+
+    .late-pass-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: center;
+    }
+
+    .late-pass-left {
+      position: relative;
+    }
+
+    .late-pass-vinyl-float {
+      position: absolute;
+      right: -20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: clamp(180px, 25vw, 340px);
+      height: clamp(180px, 25vw, 340px);
+      opacity: 0.6;
+      pointer-events: none;
+      --float-rot: 6deg;
+      animation: float-drift 8s ease-in-out infinite 1s;
+    }
+
+    .late-pass-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .late-pass-content .t-section-title {
+      margin: 1rem 0 1.5rem;
+    }
+
+    .late-pass-content .t-body {
+      margin-bottom: 1rem;
+    }
+
+    .late-pass-content .t-body + .t-body {
+      margin-bottom: 2.5rem;
+    }
+
+    .late-pass-rule {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.5rem;
+      border: 1px solid var(--white-faint);
+      margin-bottom: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .late-pass-rule::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--accent);
+    }
+
+    .late-pass-rule-icon {
+      font-family: var(--font-sans);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .late-pass-rule-text {
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      color: var(--white-dim);
+      line-height: 1.6;
+    }
+
+    .btn-late-pass {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 2.2rem;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.3s ease, color 0.3s ease;
+      cursor: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-late-pass::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      transform: translateX(-101%);
+      transition: transform 0.4s var(--ease-out-expo);
+    }
+
+    .btn-late-pass:hover::before { transform: translateX(0); }
+    .btn-late-pass:hover { color: var(--bg); }
+
+    .btn-late-pass span { position: relative; z-index: 1; }
+    .btn-arrow { transition: transform 0.3s ease; position: relative; z-index: 1; }
+    .btn-late-pass:hover .btn-arrow { transform: translateX(6px); }
+
+    .late-pass-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .late-pass-vinyl-main {
+      width: clamp(280px, 40vw, 480px);
+      height: clamp(280px, 40vw, 480px);
+    }
+
+    /* ─── SECTION: RSVP ───────────────────────────────────────────── */
+    #rsvp {
+      padding: clamp(6rem, 12vh, 10rem) 0;
+      background: var(--bg);
+      text-align: center;
+    }
+
+    .rsvp-inner {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .rsvp-header {
+      margin-bottom: clamp(3rem, 6vh, 4rem);
+    }
+
+    .rsvp-header .t-section-title {
+      margin: 0.8rem 0 1.2rem;
+    }
+
+    .rsvp-sub {
+      font-family: var(--font-body);
+      font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+      color: var(--white-dim);
+      font-weight: 300;
+      line-height: 1.65;
+    }
+
+    .rsvp-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      text-align: left;
+    }
+
+    .rsvp-label {
+      display: block;
+      font-family: var(--font-sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    .rsvp-input {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--white-faint);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 300;
+      padding: 1.1rem 1.4rem;
+      outline: none;
+      transition: border-color 0.3s ease;
+      -webkit-appearance: none;
+      border-radius: 0;
+    }
+
+    .rsvp-input::placeholder {
+      color: rgba(245,240,236,0.2);
+    }
+
+    .rsvp-input:focus {
+      border-color: var(--accent-mid);
+    }
+
+    .btn-rsvp {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      width: 100%;
+      padding: 1.2rem 2rem;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: transparent;
+      cursor: none;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.3s ease;
+      margin-top: 0.4rem;
+    }
+
+    .btn-rsvp::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      transform: translateX(-101%);
+      transition: transform 0.4s var(--ease-out-expo);
+    }
+
+    .btn-rsvp:not(:disabled):hover::before { transform: translateX(0); }
+    .btn-rsvp:not(:disabled):hover { color: var(--bg); }
+    .btn-rsvp span { position: relative; z-index: 1; }
+
+    .btn-rsvp:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+
+    .rsvp-error-msg {
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      color: #e87070;
+      text-align: center;
+      margin-top: 0.2rem;
+    }
+
+    /* Success state */
+    .rsvp-success {
+      padding: 2rem 0;
+      animation: reveal-up 0.8s var(--ease-out-expo) both;
+    }
+
+    .rsvp-success-icon {
+      font-size: 2.2rem;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+      line-height: 1;
+    }
+
+    .rsvp-success-title {
+      font-family: var(--font-sans);
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 0.6rem;
+    }
+
+    .rsvp-success-sub {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      color: var(--accent);
+      font-weight: 300;
+    }
+
+    .btn-como-llegar {
+      font-family: var(--font-body);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(245,240,236,0.35);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(245,240,236,0.15);
+      padding-bottom: 1px;
+      transition: color 0.2s, border-color 0.2s;
+      margin-top: 0.25rem;
+    }
+    .btn-como-llegar:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* ─── SECTION: UBICACIÓN ───────────────────────────────────────── */
+    #ubicacion {
+      padding: clamp(5rem, 10vh, 8rem) 0;
+      text-align: center;
+    }
+
+    #ubicacion .t-section-title {
+      margin: 1rem 0 0.75rem;
+    }
+
+    .ubicacion-meta {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--white-dim);
+      margin-bottom: clamp(2.5rem, 5vh, 4rem);
+    }
+
+    .btn-ubicacion {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.9rem 2.4rem;
+      background: transparent;
+      border: 1px solid var(--accent-mid);
+      color: var(--white);
+      font-family: var(--font-sans);
+      font-size: clamp(0.8rem, 1.5vw, 1rem);
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.4s var(--ease-out-expo);
+      cursor: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-ubicacion::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.5s var(--ease-out-expo);
+    }
+
+    .btn-ubicacion:hover::before { transform: scaleY(1); }
+    .btn-ubicacion:hover { color: var(--bg); border-color: var(--accent); }
+    .btn-ubicacion span { position: relative; z-index: 1; }
+
+    /* ─── SECTION 5: WHATSAPP CONTACT ──────────────────────────────── */
+    #contacto {
+      padding: clamp(6rem, 12vh, 10rem) 0;
+      background: var(--dark);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contacto-bg-vinyl {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: clamp(400px, 70vw, 900px);
+      height: clamp(400px, 70vw, 900px);
+      opacity: 0.04;
+      pointer-events: none;
+    }
+
+    .contacto-inner {
+      position: relative;
+      z-index: 2;
+    }
+
+    .contacto-inner .t-section-title {
+      margin: 1rem 0 1.5rem;
+    }
+
+    .contacto-sub {
+      font-family: var(--font-body);
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      color: var(--white-dim);
+      margin-bottom: clamp(3rem, 6vh, 5rem);
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+      font-weight: 300;
+      line-height: 1.65;
+    }
+
+    .btn-whatsapp {
+      display: inline-flex;
+      align-items: center;
+      gap: 1.2rem;
+      padding: 1.4rem 3rem;
+      background: transparent;
+      border: 1px solid var(--accent-mid);
+      color: var(--white);
+      font-family: var(--font-sans);
+      font-size: clamp(1rem, 2vw, 1.4rem);
+      font-style: normal;
+      font-weight: 300;
+      text-decoration: none;
+      transition: all 0.4s var(--ease-out-expo);
+      cursor: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-whatsapp::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.5s var(--ease-out-expo);
+    }
+
+    .btn-whatsapp:hover::before { transform: scaleY(1); }
+    .btn-whatsapp:hover { color: var(--bg); border-color: var(--accent); }
+
+    .btn-whatsapp .btn-text { position: relative; z-index: 1; }
+
+    .whatsapp-icon {
+      position: relative;
+      z-index: 1;
+      width: 22px;
+      height: 22px;
+      opacity: 0.6;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn-whatsapp:hover .whatsapp-icon { opacity: 1; }
+
+    .contacto-footnote {
+      margin-top: 2rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(245,240,236,0.25);
+    }
+
+    /* ─── FOOTER ──────────────────────────────────────────────────── */
+    #footer {
+      padding: clamp(4rem, 8vh, 6rem) 0 clamp(2rem, 4vh, 3rem);
+      background: var(--bg);
+      border-top: 1px solid var(--white-faint);
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(2rem, 4vh, 3rem);
+      text-align: center;
+    }
+
+    .footer-vinyl {
+      width: clamp(60px, 8vw, 90px);
+      height: clamp(60px, 8vw, 90px);
+      opacity: 0.6;
+    }
+
+    .footer-wordmark {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 4vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--white);
+    }
+
+    .footer-sub {
+      font-family: var(--font-sans);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white-dim);
+      margin-top: 0.4rem;
+    }
+
+    .footer-location {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(245,240,236,0.3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-location:hover {
+      color: var(--accent);
+    }
+
+    .footer-legal {
+      max-width: 620px;
+      font-size: 0.65rem;
+      line-height: 1.7;
+      color: rgba(245,240,236,0.22);
+      font-weight: 300;
+      padding: 0 1rem;
+      border-top: 1px solid var(--white-faint);
+      padding-top: 2rem;
+    }
+
+    /* ─── SECTION DIVIDER ─────────────────────────────────────────── */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--white-faint), transparent);
+    }
+
+    /* ─── RESPONSIVE ──────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      body { cursor: auto; }
+      #cursor, #cursor-ring { display: none; }
+
+      /* On mobile — disc centered, no hover animation */
+      .hero-vinyl-riser {
+        transform: translateY(-50%) !important;
+        transition: none !important;
+        right: -8%;
+        width: clamp(220px, 62vw, 400px);
+        height: clamp(220px, 62vw, 400px);
+        opacity: 0.35;
+      }
+
+      #hero:hover .hero-vinyl-riser {
+        transform: translateY(-50%) !important;
+      }
+
+      .rules-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .rules-grid .rule-card {
+        grid-column: span 1 !important;
+      }
+
+      .rule-card.rule-no-entry {
+        grid-column: span 1;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+      }
+
+      .mood-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .mood-disclaimer {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .pinterest-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pinterest-card {
+        min-height: clamp(160px, 35vw, 220px);
+      }
+
+      .late-pass-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .late-pass-visual { display: none; }
+
+      .late-pass-vinyl-float { display: none; }
+
+      .contacto-bg-vinyl { opacity: 0.03; }
+    }
+
+    @media (max-width: 600px) {
+      .hero-bg-vinyl { opacity: 0.2; width: 95vw; height: 95vw; }
+
+      .pinterest-card-title {
+        font-size: clamp(2.5rem, 12vw, 4rem);
+      }
+
+      .btn-whatsapp {
+        padding: 1.2rem 2rem;
+        font-size: 1.2rem;
+      }
+    }
+    /* ─── PASSWORD GATE ───────────────────────────────────────────── */
+    #password-gate:not(.unlocked) ~ #cursor,
+    #password-gate:not(.unlocked) ~ #cursor-ring {
+      opacity: 0 !important;
+    }
+
+    #password-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    #password-gate.unlocked {
+      pointer-events: none;
+      animation: gate-fade-out 0.6s var(--ease-out-expo) forwards;
+    }
+
+    @keyframes gate-fade-out {
+      to { opacity: 0; }
+    }
+
+    .gate-wordmark {
+      font-family: var(--font-display);
+      font-size: clamp(4rem, 14vw, 10rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1;
+      color: var(--white);
+      text-transform: uppercase;
+      user-select: none;
+    }
+
+    .gate-wordmark span {
+      color: var(--accent);
+    }
+
+    .gate-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .gate-input {
+      cursor: none;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(245,240,236,0.25);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-align: center;
+      text-transform: uppercase;
+      padding: 0.6rem 1rem;
+      width: clamp(180px, 30vw, 280px);
+      outline: none;
+      transition: border-color 0.3s;
+      caret-color: var(--accent);
+    }
+
+    .gate-input::placeholder {
+      color: var(--white-dim);
+      letter-spacing: 0.15em;
+    }
+
+    .gate-input:focus {
+      border-bottom-color: var(--accent);
+    }
+
+    .gate-error {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      opacity: 0;
+      transition: opacity 0.2s;
+      height: 1em;
+    }
+
+    .gate-error.visible {
+      opacity: 1;
+    }
+
+    .gate-clue-vinyl {
+      width: 72px;
+      height: 72px;
+      opacity: 0.55;
+      animation: gate-spin 5s linear infinite;
+      margin-bottom: 0.5rem;
+    }
+
+    @keyframes gate-spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    .gate-label {
+      font-family: var(--font-sans);
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 0.25rem;
+    }
+
+    .gate-btn {
+      margin-top: 0.25rem;
+      padding: 0.6rem 2.2rem;
+      background: transparent;
+      border: 1px solid var(--accent-mid);
+      color: var(--white);
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: none;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.3s var(--ease-out-expo), border-color 0.3s;
+    }
+
+    .gate-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      transform: translateX(-101%);
+      transition: transform 0.35s var(--ease-out-expo);
+    }
+
+    .gate-btn:hover::before { transform: translateX(0); }
+    .gate-btn:hover { color: var(--bg); border-color: var(--accent); }
+
+    /* Hint dropdown wrapper */
+    .gate-hint-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    #gate-hint-toggle {
+      font-family: var(--font-sans);
+      font-size: 0.58rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(245,240,236,0.45);
+      background: transparent;
+      border: 1px solid rgba(245,240,236,0.2);
+      padding: 0.45rem 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.25s, border-color 0.25s;
+    }
+    #gate-hint-toggle::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(245,240,236,0.06);
+      transform: translateX(-101%);
+      transition: transform 0.35s var(--ease-out-expo);
+    }
+    #gate-hint-toggle:hover::before { transform: translateX(0); }
+    #gate-hint-toggle:hover {
+      color: rgba(245,240,236,0.85);
+      border-color: rgba(245,240,236,0.4);
+    }
+    .gate-hint-caret {
+      display: inline-block;
+      font-size: 0.6rem;
+      transition: transform 0.3s var(--ease-out-expo);
+      position: relative;
+    }
+    #gate-hint-toggle.open .gate-hint-caret {
+      transform: rotate(180deg);
+    }
+
+    /* Dropdown clues panel */
+    .gate-clues {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.4s var(--ease-out-expo), opacity 0.35s ease, margin-top 0.3s ease;
+      margin-top: 0;
+    }
+    .gate-clues.open {
+      max-height: 60px;
+      opacity: 1;
+      margin-top: 0.75rem;
+    }
+
+    .gate-clue {
+      font-size: 1.3rem;
+      color: var(--accent);
+      text-shadow: 0 0 14px rgba(236,184,166,0.55);
+      cursor: default;
+    }
+    .gate-clue-sep {
+      font-size: 0.45rem;
+      color: rgba(245,240,236,0.2);
+    }
+
+
+    .gate-contact {
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      color: var(--white-dim);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(245,240,236,0.2);
+      padding-bottom: 1px;
+      transition: color 0.2s, border-color 0.2s;
+      margin-top: 1rem;
+    }
+
+    .gate-contact:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .gate-hint {
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--white-dim);
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- PASSWORD GATE -->
+  <div id="password-gate">
+    <div class="gate-wordmark">FACE <span>A</span></div>
+    <img src="asset/Angelo Studio.png" class="gate-clue-vinyl" alt="">
+    <div class="gate-form">
+      <span class="gate-label">Portal de Invitación</span>
+      <span class="gate-hint">Contraseña de acceso</span>
+      <input
+        id="gate-input"
+        class="gate-input"
+        type="text"
+        placeholder="ingresa tu contraseña"
+        autocomplete="off"
+        autofocus
+      >
+      <button id="gate-btn" class="gate-btn">Entrar</button>
+      <span id="gate-error" class="gate-error">Contraseña incorrecta</span>
+    </div>
+    <div class="gate-hint-wrap">
+      <button id="gate-hint-toggle">
+        necesito una pista
+        <span class="gate-hint-caret">▾</span>
+      </button>
+      <div class="gate-clues">
+        <span class="gate-clue">↻</span>
+        <span class="gate-clue-sep">·</span>
+        <span class="gate-clue">⤵</span>
+        <span class="gate-clue-sep">·</span>
+        <span class="gate-clue">VII</span>
+      </div>
+    </div>
+    <a href="https://wa.me/17869648892" target="_blank" class="gate-contact">¿Necesitas ayuda con el código? Escríbenos</a>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 1: HERO                                                 -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <section id="hero">
+
+    <!-- Primary vinyl — rises from below on hover -->
+    <div class="hero-vinyl-riser">
+      <div class="vinyl-wrap hero-bg-vinyl">
+        <div class="vinyl-disc">
+          <img src="asset/Angelo Studio.png" class="vinyl-img" alt="Angelo Studio vinyl record">
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span class="t-label">Angelo Studio presenta</span>
+      </div>
+
+      <div class="hero-wordmark">
+        <div class="t-hero">FACE <span class="hero-a-letter">A</span></div>
+      </div>
+
+      <div class="hero-divider"></div>
+
+      <p class="hero-sub">Fuiste elegido.</p>
+
+      <p class="hero-studio">Solo para invitados</p>
+
+      <div class="hero-cta-row">
+        <a href="#rsvp" class="btn-hero-rsvp">
+          <span>Confirmar asistencia</span>
+          <span>↓</span>
+        </a>
+        <a href="#ubicacion" class="btn-hero-location">
+          <span>Cómo llegar</span>
+          <span>↓</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- EVENT TICKER -->
+  <div class="event-ticker">
+    <div class="event-ticker-track">
+      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>3 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
+      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>3 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
+      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>3 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
+      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>3 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
+      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>3 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
+      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>3 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
+      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>3 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
+      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>3 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 2: LO QUE NECESITAS SABER                              -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <section id="instrucciones">
+    <div class="section-inner">
+
+      <div class="instrucciones-header reveal">
+        <span class="t-label">Antes de llegar</span>
+        <h2 class="t-section-title">Lo Que Necesitas<br><em style="font-style:italic; color:var(--accent); font-weight:300;">Saber</em></h2>
+      </div>
+
+      <div class="rules-grid reveal reveal-delay-1">
+
+        <!-- Rule 1 -->
+        <div class="rule-card">
+          <span class="rule-number">01</span>
+          <h3 class="rule-title">Tráelo en buen estado</h3>
+          <p class="rule-desc">Tu vinilo debe poder sonar. Sin grietas, sin rayones profundos, sin alabeos ni deformaciones. Si llega en mal estado y no puede reproducirse correctamente, el staff lo rechaza en la puerta. Sin excepciones.</p>
+        </div>
+
+        <!-- Rule 2 -->
+        <div class="rule-card">
+          <span class="rule-number">02</span>
+          <h3 class="rule-title">Solo álbumes musicales</h3>
+          <p class="rule-desc">Cualquier género musical es bienvenido — lo que importa es que sea música de verdad. Soundtracks de películas, registros de voz, efectos de sonido y novelty records no califican. La decisión final siempre es del staff en la puerta.</p>
+        </div>
+
+        <!-- Rule 3 -->
+        <div class="rule-card">
+          <span class="rule-number">03</span>
+          <h3 class="rule-title">Puede sonar esta noche</h3>
+          <p class="rule-desc">Los DJs pueden seleccionar tu disco para tocarlo durante el evento. Eso es parte del ritual. Llega preparado.</p>
+        </div>
+
+        <!-- Rule 4 -->
+        <div class="rule-card">
+          <span class="rule-number">04</span>
+          <h3 class="rule-title">Eres más que un invitado</h3>
+          <p class="rule-desc">Cada vinilo que llega construye la noche. No eres solo el público — eres parte de lo que suena. El set es colectivo.</p>
+        </div>
+
+        <!-- Rule 5 -->
+        <div class="rule-card" style="grid-column: span 2;">
+          <span class="rule-number">05</span>
+          <h3 class="rule-title">Tráelo bien protegido</h3>
+          <p class="rule-desc">Sleeve, funda, lo que tengas. El disco merece llegar en condiciones. Cuídalo como cuidas lo que es tuyo.</p>
+        </div>
+
+        <!-- Rule 6: No Vinyl No Entry — full width -->
+        <div class="rule-card rule-no-entry">
+          <div class="vinyl-wrap no-entry-vinyl">
+            <div class="vinyl-disc">
+              <img src="asset/RULE.png" class="vinyl-img" alt="FACE A vinyl record">
+            </div>
+          </div>
+          <div class="no-entry-text">
+            <span class="t-label" style="margin-bottom:0.8rem; display:block;">La regla de oro</span>
+            <h3 class="rule-title">El vinilo es tu entrada.</h3>
+            <p class="rule-desc">Sin vinilo aprobado, no entras. Si no traes uno o el tuyo no pasa la revisión, deberás pagar la diferencia al precio estándar antes de entrar — o volver con un disco que califique. No hay reembolsos. No hay conversaciones.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 3: EL MOOD — DRESS CODE                                -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <section id="mood">
+    <div class="section-inner">
+
+      <div class="mood-header reveal">
+        <div>
+          <span class="t-label" style="margin-bottom:0.8rem; display:block;">Cómo llegar</span>
+          <h2 class="t-section-title">La Vestimenta</h2>
+        </div>
+        <p class="mood-copy">
+          No hay código de vestimenta. Solo una expectativa — entra como alguien que el cuarto va a recordar.
+        </p>
+      </div>
+
+      <!-- Dress code disclaimer -->
+      <div class="mood-disclaimer reveal reveal-delay-1">
+        <div class="mood-disclaimer-icon">!</div>
+        <div>
+          <strong>Colores oscuros no aplican.</strong>
+          <p>No aceptamos outfits completamente negros ni completamente blancos. Viste con intención — colores, texturas, carácter. No es capricho, es parte de lo que hace la noche. El cuarto tiene que verte llegar.</p>
+        </div>
+      </div>
+
+      <!-- Pinterest mood boards -->
+      <div class="pinterest-grid reveal reveal-delay-2">
+
+        <a href="https://co.pinterest.com/Dormin2008/girls-face-a/" class="pinterest-card" target="_blank" rel="noopener noreferrer">
+          <div class="pinterest-card-top">
+            <span class="pinterest-card-label">Inspiración · Pinterest</span>
+            <div class="pinterest-card-title">Ellas</div>
+          </div>
+          <div class="pinterest-card-bottom">
+            <span class="pinterest-card-cta">Ver board</span>
+            <span class="pinterest-card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="https://co.pinterest.com/Dormin2008/boys-face-a/" class="pinterest-card" target="_blank" rel="noopener noreferrer">
+          <div class="pinterest-card-top">
+            <span class="pinterest-card-label">Inspiración · Pinterest</span>
+            <div class="pinterest-card-title">Ellos</div>
+          </div>
+          <div class="pinterest-card-bottom">
+            <span class="pinterest-card-cta">Ver board</span>
+            <span class="pinterest-card-arrow">→</span>
+          </div>
+        </a>
+
+      </div>
+
+      <div class="mood-tagline reveal reveal-delay-3">
+        <p>
+          Entra como alguien que <em>el cuarto va a recordar.</em>
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- SECTION: EL PREMIO — CUSTOM VINYL PRIZE                        -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <section id="premio">
+    <div class="section-inner">
+
+      <div class="premio-header reveal">
+        <span class="t-label">Para quien encuentre el código</span>
+        <h2 class="t-section-title">El Premio</h2>
+        <p class="premio-lead">Hay un código escondido. Quien lo encuentre antes del evento se lleva algo que no tiene precio.</p>
+      </div>
+
+      <div class="premio-visual reveal reveal-delay-1">
+        <div class="vinyl-wrap premio-vinyl">
+          <div class="vinyl-disc">
+            <img src="asset/FACE RECORD.png" class="vinyl-img" alt="FACE A custom vinyl prize">
+          </div>
+        </div>
+      </div>
+
+      <div class="premio-cards reveal reveal-delay-2">
+
+        <div class="premio-card">
+          <span class="premio-card-icon">◈</span>
+          <h3 class="premio-card-title">Invitación al evento</h3>
+          <p class="premio-card-desc">Acceso directo a FACE A. Sin lista de espera, sin condiciones — solo encuentra el código y el cupo es tuyo.</p>
+        </div>
+
+        <div class="premio-card">
+          <span class="premio-card-icon">◎</span>
+          <h3 class="premio-card-title">Un disco personalizado de Angelo Studio</h3>
+          <p class="premio-card-desc">Creado exclusivamente para el ganador. Una sola copia en existencia — prensada para ti y nadie más.</p>
+        </div>
+
+      </div>
+
+      <!-- Music rights disclaimer -->
+      <div class="premio-disclaimer reveal reveal-delay-3">
+        <div class="premio-disclaimer-icon">©</div>
+        <div>
+          <strong>Aviso sobre derechos de autor</strong>
+          <p>La música incluida en este vinilo no es propiedad de Angelo Studio ni fue creada por ellos. Todos los derechos pertenecen a sus respectivos artistas y sellos discográficos. Este vinilo es una pieza coleccionable del evento y no está destinado a distribución comercial de ningún tipo.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 4: ¿TRAES A ALGUIEN? — GUEST POLICY                   -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <section id="late-pass">
+    <div class="section-inner">
+      <div class="late-pass-inner">
+
+        <div class="late-pass-content reveal">
+          <span class="t-label">Política de acompañantes</span>
+          <h2 class="t-section-title">¿Traes a<br>Alguien?</h2>
+
+          <p class="t-body" style="margin: 1.5rem 0 2.5rem;">
+            Tu invitación es personal. Llegaste porque alguien pensó en ti específicamente. Eso tiene valor.
+          </p>
+
+          <div class="late-pass-rule">
+            <div class="late-pass-rule-icon">→</div>
+            <p class="late-pass-rule-text">
+              Si quieres traer a alguien que no estaba en la lista original, esa persona debe conseguir su <strong style="color:var(--white);">Pass</strong>. Sin excepción.
+            </p>
+          </div>
+
+          <div class="late-pass-rule">
+            <div class="late-pass-rule-icon">→</div>
+            <p class="late-pass-rule-text">
+              El Pass puede comprarse con anticipación o en la puerta el día del evento. Recomendamos tenerlo antes para agilizar el ingreso.
+            </p>
+          </div>
+
+          <div class="late-pass-rule" style="margin-bottom: 2.5rem;">
+            <div class="late-pass-rule-icon">→</div>
+            <p class="late-pass-rule-text">
+              Y recuerda — ellos también deben traer su vinilo para entrar sin costo adicional. Sin vinilo, deberán pagar la diferencia entre el Pass con vinilo y el Pass estándar en la puerta.
+            </p>
+          </div>
+
+          <!--
+            LATE PASS CTA:
+            Replace href="#" with the actual ticket/purchase link.
+            Example: href="https://www.instagram.com/angelostudio.co" or ticketing URL
+          -->
+          <a href="https://angelostudio.art/facea" class="btn-late-pass" target="_blank" rel="noopener">
+            <span>Conseguir un Pass</span>
+            <span class="btn-arrow">→</span>
+          </a>
+        </div>
+
+        <div class="late-pass-visual reveal reveal-delay-2">
+          <div class="vinyl-wrap late-pass-vinyl-main">
+            <div class="vinyl-disc">
+              <img src="asset/+1.png" class="vinyl-img" alt="Guest pass vinyl record">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- SECTION: RSVP                                                   -->
+  <!-- Set RSVP_SCRIPT_URL below to your deployed Google Apps Script  -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <section id="rsvp">
+    <div class="section-inner">
+      <div class="rsvp-inner">
+
+        <div class="rsvp-header reveal">
+          <span class="t-label">Confirma tu presencia</span>
+          <h2 class="t-section-title">Estás en<br><em style="font-style:italic; color:var(--accent); font-weight:300;">la lista.</em></h2>
+          <p class="rsvp-sub">Solo necesitamos tu nombre para registrarte.</p>
+        </div>
+
+        <form class="rsvp-form reveal reveal-delay-1" id="rsvpForm" novalidate>
+          <div>
+            <label class="rsvp-label" for="rsvpName">Nombre completo</label>
+            <input
+              class="rsvp-input"
+              type="text"
+              id="rsvpName"
+              name="name"
+              placeholder="Ej. Ana García"
+              autocomplete="name"
+              required
+            >
+          </div>
+          <button class="btn-rsvp" type="submit" id="rsvpBtn">
+            <span class="btn-rsvp-text">Confirmar asistencia</span>
+            <span class="btn-arrow">→</span>
+          </button>
+          <p class="rsvp-error-msg" id="rsvpError" hidden>Algo salió mal. Inténtalo de nuevo.</p>
+        </form>
+
+        <div class="rsvp-success" id="rsvpSuccess" hidden>
+          <div class="rsvp-success-icon">✓</div>
+          <p class="rsvp-success-title">Confirmado.</p>
+          <p class="rsvp-success-sub">Te vemos ahí.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- SECTION: UBICACIÓN                                              -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <section id="ubicacion">
+    <div class="section-inner">
+      <span class="t-label reveal">Dónde</span>
+      <h2 class="t-section-title reveal reveal-delay-1">Casa del Ángel</h2>
+      <p class="ubicacion-meta reveal reveal-delay-2">El Retiro, Antioquia &nbsp;·&nbsp; 3 de Julio &nbsp;·&nbsp; 6:30 PM</p>
+      <a
+        href="https://maps.app.goo.gl/ZVSw7s6rPBw7zLPf8"
+        class="btn-ubicacion reveal reveal-delay-3"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span>Cómo llegar</span>
+        <span class="btn-arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 5: ¿NECESITAS AYUDA? — WHATSAPP CONTACT               -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <section id="contacto">
+
+    <div class="section-inner contacto-inner">
+      <span class="t-label reveal">Angelo Studio</span>
+      <h2 class="t-section-title reveal reveal-delay-1">¿Tienes<br>preguntas?</h2>
+
+      <p class="contacto-sub reveal reveal-delay-2">
+        Estamos en WhatsApp. Si algo no está claro, escríbenos. Responderemos antes del evento.
+      </p>
+
+      <!--
+        WHATSAPP DEEP LINK:
+        Number: +17869648892
+        Pre-written message is URL-encoded below.
+        Modify the text= parameter to change the default message.
+      -->
+      <a
+        href="https://wa.me/17869648892?text=Hola%2C+tengo+una+pregunta+sobre+FACE+A+de+Angelo+Studio."
+        class="btn-whatsapp reveal reveal-delay-3"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <!-- SVG WhatsApp icon — styled to match the site, not the green brand icon -->
+        <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.956 9.956 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8.5 9.5C8.5 9.5 9 11 10.5 12.5S13.5 14.5 13.5 14.5l1.5-1.5 2 2-2.5 2C9.5 17.5 6.5 13 6.5 13L8.5 9.5z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="btn-text">Escríbenos</span>
+      </a>
+
+      <p class="contacto-footnote reveal reveal-delay-4">En WhatsApp &nbsp;·&nbsp; Respondemos antes del evento</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- FOOTER                                                          -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <footer id="footer">
+    <div class="section-inner">
+      <div class="footer-inner">
+
+        <div class="vinyl-wrap footer-vinyl">
+          <div class="vinyl-disc">
+            <img src="asset/FACE RECORD.png" class="vinyl-img" alt="FACE A vinyl record">
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-wordmark">FACE A</div>
+          <div class="footer-sub">Angelo Studio</div>
+        </div>
+
+        <a href="https://maps.app.goo.gl/ZVSw7s6rPBw7zLPf8" class="footer-location" target="_blank" rel="noopener noreferrer">Casa Del Ángel · El Retiro, Antioquia · 3 Jul</a>
+
+        <p class="footer-legal">
+          La música incluida en este vinilo no es propiedad de Angelo Studio ni fue creada por ellos — todos los derechos pertenecen a sus respectivos artistas y sellos discográficos.
+        </p>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- JAVASCRIPT                                                      -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <script>
+    /* ── Password gate ──────────────────────────────────────────── */
+    (function() {
+      const gate    = document.getElementById('password-gate');
+      const input   = document.getElementById('gate-input');
+      const errMsg  = document.getElementById('gate-error');
+      const PASS         = 'sulco';
+      const WINNER_CODES = ['spininjuly', 'girarenjulio', 'giraenjulio', 'girar en julio', 'gira en julio', 'spin in july'];
+
+      /* Hint dropdown */
+      const hintBtn  = document.getElementById('gate-hint-toggle');
+      const cluesEl  = gate.querySelector('.gate-clues');
+      hintBtn.addEventListener('click', () => {
+        const isOpen = cluesEl.classList.toggle('open');
+        hintBtn.classList.toggle('open', isOpen);
+      });
+
+      function unlock() {
+        gate.classList.add('unlocked');
+        setTimeout(() => gate.remove(), 650);
+      }
+
+      function shake() {
+        errMsg.classList.add('visible');
+        input.value = '';
+        input.style.borderBottomColor = 'var(--accent)';
+        setTimeout(() => {
+          errMsg.classList.remove('visible');
+          input.style.borderBottomColor = '';
+        }, 2000);
+        fetch(`${CRACK_SCRIPT_URL}?timestamp=${encodeURIComponent(new Date().toISOString())}`).catch(()=>{});
+      }
+
+      function attempt() {
+        const val = input.value.trim().toLowerCase();
+        if (WINNER_CODES.includes(val)) {
+          window.location.href = 'winner.html';
+        } else if (val === PASS) {
+          unlock();
+        } else {
+          shake();
+        }
+      }
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') attempt();
+      });
+
+      document.getElementById('gate-btn').addEventListener('click', attempt);
+    })();
+
+    /* ── Custom cursor ──────────────────────────────────────────── */
+    const cursor     = document.getElementById('cursor');
+    const cursorRing = document.getElementById('cursor-ring');
+    let mouseX = 0, mouseY = 0;
+    let ringX  = 0, ringY  = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursor.style.left = mouseX + 'px';
+      cursor.style.top  = mouseY + 'px';
+    });
+
+    function animateCursorRing() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      cursorRing.style.left = ringX + 'px';
+      cursorRing.style.top  = ringY + 'px';
+      requestAnimationFrame(animateCursorRing);
+    }
+    animateCursorRing();
+
+    document.querySelectorAll('a, button, .rule-card, .mood-cell, .vinyl-wrap').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.width  = '18px';
+        cursor.style.height = '18px';
+        cursorRing.style.width  = '50px';
+        cursorRing.style.height = '50px';
+        cursorRing.style.borderColor = 'rgba(236,184,166,0.8)';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.width  = '10px';
+        cursor.style.height = '10px';
+        cursorRing.style.width  = '36px';
+        cursorRing.style.height = '36px';
+        cursorRing.style.borderColor = 'rgba(236,184,166,0.5)';
+      });
+    });
+
+    /* ── Vinyl spin engine — hover to spin, return to 0° on leave ── */
+    const DEG_PER_MS = 360 / 3600; // 3.6s per revolution
+
+    // useMouseMove: true = start spin on any mousemove (handles pre-hovered / text-overlap case)
+    function setupVinylSpin(disc, triggerEl, useMouseMove) {
+      let angle      = 0;
+      let rafId      = null;
+      let lastTime   = null;
+      let returning  = false;
+
+      // Take control away from CSS animation
+      disc.style.animation = 'none';
+      disc.style.transform = 'rotate(0deg)';
+
+      function spinLoop(time) {
+        if (!lastTime) lastTime = time;
+        const delta = time - lastTime;
+        lastTime = time;
+        angle = (angle + DEG_PER_MS * delta) % 360;
+        disc.style.transform = `rotate(${angle}deg)`;
+        rafId = requestAnimationFrame(spinLoop);
+      }
+
+      function startSpin() {
+        if (returning) disc.style.transition = ''; // abort return
+        returning = false;
+        cancelAnimationFrame(rafId);
+        lastTime = null;
+        rafId    = requestAnimationFrame(spinLoop);
+      }
+
+      function returnToZero() {
+        returning = true;
+        cancelAnimationFrame(rafId);
+        lastTime  = null;
+        rafId     = null;
+
+        // Shortest arc back to 0° (or 360° if already past halfway)
+        const norm   = ((angle % 360) + 360) % 360;
+        const target = norm > 180 ? 360 : 0;
+        const ms     = Math.max(250, (Math.abs(norm - target) / 360) * 1200);
+
+        disc.style.transition = `transform ${ms}ms cubic-bezier(0.16, 1, 0.3, 1)`;
+        disc.style.transform  = `rotate(${target}deg)`;
+
+        setTimeout(() => {
+          disc.style.transition = '';
+          disc.style.transform  = 'rotate(0deg)';
+          angle     = 0;
+          returning = false;
+        }, ms + 50);
+      }
+
+      if (useMouseMove) {
+        // mousemove fires even if cursor was already inside the element on load,
+        // or when it's hovering over a child with higher z-index (like the text div)
+        triggerEl.addEventListener('mousemove', () => {
+          if (!rafId && !returning) startSpin();
+        });
+      } else {
+        triggerEl.addEventListener('mouseenter', startSpin);
+      }
+
+      triggerEl.addEventListener('mouseleave', returnToZero);
+    }
+
+    // Wire up every vinyl — hero uses the whole hero section as trigger (mousemove mode)
+    document.querySelectorAll('.vinyl-wrap').forEach(wrap => {
+      const disc = wrap.querySelector('.vinyl-disc');
+      if (!disc) return;
+      const isHero = wrap.classList.contains('hero-bg-vinyl');
+      const trigger = isHero ? document.getElementById('hero') : wrap;
+      setupVinylSpin(disc, trigger, isHero);
+    });
+
+    /* ── Vinyl hover tilt ───────────────────────────────────────── */
+    document.querySelectorAll('.vinyl-wrap').forEach(wrap => {
+      wrap.addEventListener('mousemove', (e) => {
+        const rect    = wrap.getBoundingClientRect();
+        const centerX = rect.left + rect.width  / 2;
+        const centerY = rect.top  + rect.height / 2;
+        const deltaX  = (e.clientX - centerX) / (rect.width  / 2);
+        const deltaY  = (e.clientY - centerY) / (rect.height / 2);
+
+        const tiltX = deltaY * -8;
+        const tiltY = deltaX *  8;
+
+        wrap.style.transform = `perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.03)`;
+        wrap.style.transition = 'transform 0.1s ease';
+      });
+
+      wrap.addEventListener('mouseleave', () => {
+        wrap.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale(1)';
+        wrap.style.transition = 'transform 0.6s var(--ease-out-expo)';
+      });
+    });
+
+    /* ── Scroll reveal (Intersection Observer) ─────────────────── */
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer  = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+    revealEls.forEach(el => observer.observe(el));
+
+    /* ── Device orientation — vinyl tilt on mobile ─────────────── */
+    if (window.DeviceOrientationEvent) {
+      let hasPermission = false;
+
+      function applyOrientation(e) {
+        const gamma = e.gamma || 0; // left-right tilt (-90 to 90)
+        const beta  = e.beta  || 0; // front-back tilt (-180 to 180)
+
+        const tiltX = Math.max(-10, Math.min(10, beta  * 0.08));
+        const tiltY = Math.max(-10, Math.min(10, gamma * 0.08));
+
+        document.querySelectorAll('.vinyl-wrap').forEach(wrap => {
+          wrap.style.transform = `perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+          wrap.style.transition = 'transform 0.3s ease';
+        });
+      }
+
+      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        // iOS 13+ — permission required; trigger on first touch
+        document.addEventListener('touchstart', async function onFirst() {
+          if (!hasPermission) {
+            try {
+              const perm = await DeviceOrientationEvent.requestPermission();
+              if (perm === 'granted') {
+                window.addEventListener('deviceorientation', applyOrientation);
+                hasPermission = true;
+              }
+            } catch (err) { /* silently skip */ }
+          }
+          document.removeEventListener('touchstart', onFirst);
+        }, { once: true });
+      } else {
+        // Android / older browsers — no permission needed
+        window.addEventListener('deviceorientation', applyOrientation);
+      }
+    }
+
+    /* Scroll slowdown removed — discs are paused by default, spin on hover only */
+
+    /* Parallax removed — hero vinyl uses rise/retreat hover animation instead */
+
+    /* ── RSVP Form → Google Sheets ─────────────────────────────── */
+    // 1. Paste your deployed Google Apps Script URL here:
+    const RSVP_SCRIPT_URL  = 'https://script.google.com/macros/s/AKfycbzlnuA_0BwbmojI6vztxyzh8WiYVE-jWLigSXDMwLAuEbaM-041-8n1vDkcWiPWshVnZA/exec';
+    const CRACK_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz8KiUuPr8RZt6RNPFnUyYWZYk2SYFDoQ41XFjH-4l5LsOovT_C6C89cVfY-aUZxk6w/exec';
+
+    const rsvpForm    = document.getElementById('rsvpForm');
+    const rsvpSuccess = document.getElementById('rsvpSuccess');
+    const rsvpBtn     = document.getElementById('rsvpBtn');
+    const rsvpError   = document.getElementById('rsvpError');
+    const rsvpBtnText = rsvpBtn ? rsvpBtn.querySelector('.btn-rsvp-text') : null;
+
+    if (rsvpForm) {
+      rsvpForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('rsvpName').value.trim();
+        if (!name) return;
+
+        rsvpBtn.disabled = true;
+        rsvpBtnText.textContent = 'Enviando…';
+        rsvpError.hidden = true;
+
+        try {
+          const url = `${RSVP_SCRIPT_URL}?name=${encodeURIComponent(name)}&timestamp=${encodeURIComponent(new Date().toISOString())}`;
+          const res  = await fetch(url);
+          const json = await res.json();
+          if (json.success) {
+            rsvpForm.hidden = true;
+            rsvpSuccess.hidden = false;
+          } else {
+            throw new Error('no success');
+          }
+        } catch (err) {
+          rsvpBtn.disabled = false;
+          rsvpBtnText.textContent = 'Confirmar asistencia';
+          rsvpError.hidden = false;
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
