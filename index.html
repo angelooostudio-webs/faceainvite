@@ -454,6 +454,49 @@
       animation: fade-in 1.5s var(--ease-out-expo) 0.8s both;
     }
 
+    /* ─── HERO COUNTDOWN ──────────────────────────────────────────── */
+    .hero-countdown {
+      display: flex;
+      align-items: center;
+      gap: clamp(1.2rem, 3vw, 2.2rem);
+      margin-top: clamp(2rem, 4vh, 3rem);
+      animation: reveal-up 1.2s var(--ease-out-expo) 0.65s both;
+    }
+
+    .countdown-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .countdown-num {
+      font-family: var(--font-sans);
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      font-variant-numeric: tabular-nums;
+      min-width: 1.6em;
+      text-align: center;
+    }
+
+    .countdown-label {
+      font-size: 0.58rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .countdown-sep {
+      color: var(--white-faint);
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      font-weight: 300;
+      align-self: flex-start;
+      margin-top: 0.1em;
+    }
+
     /* ─── EVENT TICKER ────────────────────────────────────────────── */
     .event-ticker {
       width: 100%;
@@ -1938,6 +1981,28 @@
 
       <p class="hero-studio">Solo para invitados</p>
 
+      <div class="hero-countdown" id="hero-countdown" aria-label="Cuenta regresiva para el 17 de Julio">
+        <div class="countdown-block">
+          <span class="countdown-num" id="cd-days">00</span>
+          <span class="countdown-label">Días</span>
+        </div>
+        <span class="countdown-sep">:</span>
+        <div class="countdown-block">
+          <span class="countdown-num" id="cd-hours">00</span>
+          <span class="countdown-label">Horas</span>
+        </div>
+        <span class="countdown-sep">:</span>
+        <div class="countdown-block">
+          <span class="countdown-num" id="cd-minutes">00</span>
+          <span class="countdown-label">Min</span>
+        </div>
+        <span class="countdown-sep">:</span>
+        <div class="countdown-block">
+          <span class="countdown-num" id="cd-seconds">00</span>
+          <span class="countdown-label">Seg</span>
+        </div>
+      </div>
+
       <div class="hero-cta-row">
         <a href="#rsvp" class="btn-hero-rsvp">
           <span>Confirmar asistencia</span>
@@ -1959,14 +2024,14 @@
   <!-- EVENT TICKER -->
   <div class="event-ticker">
     <div class="event-ticker-track">
-      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>3 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
-      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>3 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
-      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>3 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
-      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>3 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
-      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>3 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
-      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>3 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
-      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>3 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
-      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>3 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
+      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>17 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
+      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>17 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
+      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>17 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
+      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>17 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
+      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>17 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
+      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>17 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
+      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>17 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
+      <span class="event-ticker-item">6:30 PM<span class="event-ticker-dot">·</span>17 de Julio<span class="event-ticker-dot">·</span>Casa del Ángel<span class="event-ticker-dot">·</span>El Retiro, Antioquia</span>
     </div>
   </div>
 
@@ -2267,7 +2332,7 @@
     <div class="section-inner">
       <span class="t-label reveal">Dónde</span>
       <h2 class="t-section-title reveal reveal-delay-1">Casa del Ángel</h2>
-      <p class="ubicacion-meta reveal reveal-delay-2">El Retiro, Antioquia &nbsp;·&nbsp; 3 de Julio &nbsp;·&nbsp; 6:30 PM</p>
+      <p class="ubicacion-meta reveal reveal-delay-2">El Retiro, Antioquia &nbsp;·&nbsp; 17 de Julio &nbsp;·&nbsp; 6:30 PM</p>
       <a
         href="https://maps.app.goo.gl/ZVSw7s6rPBw7zLPf8"
         class="btn-ubicacion reveal reveal-delay-3"
@@ -2337,7 +2402,7 @@
           <div class="footer-sub">Angelo Studio</div>
         </div>
 
-        <a href="https://maps.app.goo.gl/ZVSw7s6rPBw7zLPf8" class="footer-location" target="_blank" rel="noopener noreferrer">Casa Del Ángel · El Retiro, Antioquia · 3 Jul</a>
+        <a href="https://maps.app.goo.gl/ZVSw7s6rPBw7zLPf8" class="footer-location" target="_blank" rel="noopener noreferrer">Casa Del Ángel · El Retiro, Antioquia · 17 Jul</a>
 
         <p class="footer-legal">
           La música incluida en este vinilo no es propiedad de Angelo Studio ni fue creada por ellos — todos los derechos pertenecen a sus respectivos artistas y sellos discográficos.
@@ -2351,6 +2416,35 @@
   <!-- JAVASCRIPT                                                      -->
   <!-- ═══════════════════════════════════════════════════════════════ -->
   <script>
+    /* ── Countdown to event ─────────────────────────────────────── */
+    (function() {
+      const EVENT_DATE = new Date('2026-07-17T18:30:00-05:00');
+      const daysEl    = document.getElementById('cd-days');
+      const hoursEl   = document.getElementById('cd-hours');
+      const minutesEl = document.getElementById('cd-minutes');
+      const secondsEl = document.getElementById('cd-seconds');
+      if (!daysEl) return;
+
+      function pad(n) { return String(n).padStart(2, '0'); }
+
+      function tick() {
+        const diff = EVENT_DATE - new Date();
+        if (diff <= 0) {
+          daysEl.textContent = hoursEl.textContent = minutesEl.textContent = secondsEl.textContent = '00';
+          clearInterval(timer);
+          return;
+        }
+        const totalSeconds = Math.floor(diff / 1000);
+        daysEl.textContent    = pad(Math.floor(totalSeconds / 86400));
+        hoursEl.textContent   = pad(Math.floor((totalSeconds % 86400) / 3600));
+        minutesEl.textContent = pad(Math.floor((totalSeconds % 3600) / 60));
+        secondsEl.textContent = pad(totalSeconds % 60);
+      }
+
+      tick();
+      const timer = setInterval(tick, 1000);
+    })();
+
     /* ── Password gate ──────────────────────────────────────────── */
     (function() {
       const gate    = document.getElementById('password-gate');
